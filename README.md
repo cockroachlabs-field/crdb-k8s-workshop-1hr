@@ -141,3 +141,98 @@ Login with the user and password created earlier
 User: Craig
 Password: cockroach
 ```
+
+## Run a workload against Cockroach DB
+
+In this section of the workshop we will run a sample workload against the Database, this workload specifically models a set of accounts with currency balances.
+
+The first thing we need to do is initialise the workload using our secure client pod we deployed earlier, begin by opening a new terminal as we want to remain port-fowarded to the UI for monitoring purposes.
+
+In your new terminal window run
+
+```
+kubectl exec -it cockroachdb-client-secure -n $region  -- ./cockroach workload init bank 'postgresql://craig:cockroach@cockroachdb-public:26257'
+```
+
+Now we can begin running the workload against our cockroach deployment, the below command will continuiously simulate workload in to the database for 15 minutes.
+
+```
+kubectl exec -it cockroachdb-client-secure -n $region -- ./cockroach workload run bank --duration=15m --tolerate-errors 'postgresql://craig:cockroach@cockroachdb-public:26257'
+```
+
+Leave this running and take a look in the metrics section of the UI, what do you observe here?
+
+## Scaling the Database
+
+Due to the nature of CockroachDBs architecture and the way it has been built from the ground up to run inside of Kubernetes, scaling becomes very easy. In this section we will scale the cluster to 3 nodes and observe the behaviours in the UI whilst continuing to run the workload in the previous steps.
+
+First of all, open one more terminal window, this is so that we can keep the port-forward and running of the workload intact as we scale our cluster.
+
+It is as simple as running this command to change the amount of nodes running in our cluster.
+
+```
+kubectl scale sts cockroachdb --replicas=3 -n $region
+```
+
+Verify that there are now 3 sets of Cockroach pods running. (Note: 3 Nodes are the absolute mininum for High Availbility, we now have the ability to lose 1 node and still remain active. Scaling to 1 will break the cluster)
+
+```
+kubectl get pods --namespace $region
+```
+
+Monitor the UI, what is happening now 2 new nodes have been added to the cluster? Is the workload still running? Has it had any impact on performance?
+
+## Chaos Testing CockroachDB
+
+It's important to demonstrate that your database and applications can survive different types of failure, perhaps the machine running your Kubernetes node has lost power, or an availbility zone has failed in AWS. In this simple example we will demonstrate the complete loss of a node in CockroachDB and talk about how the database continues to work during this loss.
+
+Using the same Terminal we used to scale the database, we will start deleting a couple of nodes. (We will not be deleting the pod cockroachdb-0, this is simply because we're using that to port-forward in to the UI)
+
+```
+kubectl delete pods cockroachdb-2 -n $region
+```
+
+What do you see in the UI? Is your workload still running against the cluster? You should see Kubernetes restores this node quite quickly, you can verify the pod has come back by running
+
+```
+kubectl get pods -n $region
+```
+
+Try killing the 3rd node, the expeccted behaviour should be the same.
+
+```
+kubectl delete pods cockroachdb-3 -n $region
+```
+
+Now lets scale the statefulset down to just 2 replicas, this is similar to removing one node, however this time the node won't come back.
+
+```
+kubectl scale sts cockroachdb --replicas=2 -n $region
+```
+
+Observe the UI again, do you notice anything different now that the 3rd node is completely gone? Is everything still working as expected?
+
+Finally lets scale the statefulset to 1
+
+```
+kubectl scale sts cockroachdb --replicas=1 -n $region
+```
+
+In this scenario the cluster should be in a none working state and access to the UI will be lost, this is because we have lost Quorum.
+
+Finally, lets scale it back to 3
+
+```
+kubectl scale sts cockroachdb --replicas=3 -n $region
+```
+
+Has service now resumed? What is happening in the UI?
+
+## Cleaning up
+
+Now that we have demonstrated the capabilities of running CockroachDB in Kubernetes, we can clean up the resources that we have created by running the below commands.
+
+```
+kubectl delete -f manifests/cockroachdb-statefulset-secure.yaml -n $region \
+kubectl delete ns $region
+```

@@ -6,9 +6,9 @@ Welcome to an hours workshop and demonstration on how to install and monitor Coc
 
 A local or remote Kubernetes environment that is accessible from your machine, if you need some inspiration for local distributions, check out these: k3d, Minikube, Docker Desktop or Rancher Desktop.
 
-Kubectl (https://kubernetes.io/docs/tasks/tools/)
-Cockroach CLI (https://www.cockroachlabs.com/docs/v22.1/install-cockroachdb.html)
-Git (https://github.com/git-guides/install-git)
+* Kubectl (https://kubernetes.io/docs/tasks/tools/)
+* Cockroach CLI (https://www.cockroachlabs.com/docs/v22.1/install-cockroachdb.html)
+* Git (https://github.com/git-guides/install-git)
 
 
 ## Deploy CockroachDB into your k8s cluster

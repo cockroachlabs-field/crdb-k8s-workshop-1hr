@@ -142,7 +142,9 @@ User: Craig
 Password: cockroach
 ```
 
-## Run a workload against Cockroach DB
+NOTE: You may see that there are under replicated ranges, this is because we're currently only running a single replica, observe how this changes throughout the workshop.
+
+## Run a workload against CockroachDB (Single Node)
 
 In this section of the workshop we will run a sample workload against the Database, this workload specifically models a set of accounts with currency balances.
 
@@ -160,7 +162,9 @@ Now we can begin running the workload against our cockroach deployment, the belo
 kubectl exec -it cockroachdb-client-secure -n $region -- ./cockroach workload run bank --duration=15m --tolerate-errors 'postgresql://craig:cockroach@cockroachdb-public:26257'
 ```
 
-Leave this running and take a look in the metrics section of the UI, what do you observe here?
+Take a look in the metrics section of the UI, what do you observe here?
+
+Once you're happy, hit ctrl-c on the window and stop the workload but leave this terminal window open, we'll re-run this once we've scaled up.
 
 ## Scaling the Database
 
@@ -180,7 +184,18 @@ Verify that there are now 3 sets of Cockroach pods running. (Note: 3 Nodes are t
 kubectl get pods --namespace $region
 ```
 
-Monitor the UI, what is happening now 2 new nodes have been added to the cluster? Is the workload still running? Has it had any impact on performance?
+Monitor the UI, what is happening now 2 new nodes have been added to the cluster? 
+
+Restart the workload job in your other terminal
+
+```
+kubectl exec -it cockroachdb-client-secure -n $region -- ./cockroach workload run bank --duration=15m --tolerate-errors 'postgresql://craig:cockroach@cockroachdb-public:26257'
+```
+
+Monitor the UI again, what is happening now the workload is running? What metrics do you see across the nodes?
+
+Once you're happy, keep the workload running and move on to the next task
+
 
 ## Chaos Testing CockroachDB
 

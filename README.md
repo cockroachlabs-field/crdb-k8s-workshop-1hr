@@ -220,7 +220,7 @@ It's important to demonstrate that your database and applications can survive di
 Using the same Terminal we used to scale the database, we will start deleting a couple of nodes. (We will not be deleting the pod cockroachdb-0, this is simply because we're using that to port-forward in to the UI)
 
 ```
-kubectl delete pods cockroachdb-2 -n $region
+kubectl delete pods cockroachdb-1 -n $region
 ```
 
 What do you see in the UI? Is your workload still running against the cluster? You should see Kubernetes restores this node quite quickly, you can verify the pod has come back by running
@@ -229,7 +229,7 @@ What do you see in the UI? Is your workload still running against the cluster? Y
 kubectl get pods -n $region
 ```
 
-Try killing the 3rd node, the expeccted behaviour should be the same.
+Try killing the 3rd node, the expected behaviour should be the same.
 
 ```
 kubectl delete pods cockroachdb-2 -n $region

@@ -232,7 +232,7 @@ kubectl get pods -n $region
 Try killing the 3rd node, the expeccted behaviour should be the same.
 
 ```
-kubectl delete pods cockroachdb-3 -n $region
+kubectl delete pods cockroachdb-2 -n $region
 ```
 
 Now lets scale the statefulset down to just 2 replicas, this is similar to removing one node, however this time the node won't come back.

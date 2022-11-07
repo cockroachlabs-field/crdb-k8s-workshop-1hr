@@ -159,6 +159,10 @@ The first thing we need to do is initialise the workload using our secure client
 In your new terminal window run
 
 ```
+export region="eu-west-2"
+```
+
+```
 kubectl exec -it cockroachdb-client-secure -n $region  -- ./cockroach workload init bank 'postgresql://craig:cockroach@cockroachdb-public:26257'
 ```
 
@@ -178,7 +182,13 @@ Due to the nature of CockroachDBs architecture and the way it has been built fro
 
 First of all, open one more terminal window, this is so that we can keep the port-forward and running of the workload intact as we scale our cluster.
 
-It is as simple as running this command to change the amount of nodes running in our cluster.
+Set the region again
+
+```
+export region="eu-west-2"
+```
+
+Then, is as simple as running this command to change the amount of nodes running in our cluster.
 
 ```
 kubectl scale sts cockroachdb --replicas=3 -n $region

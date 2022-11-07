@@ -11,6 +11,12 @@ A local or remote Kubernetes environment that is accessible from your machine, i
 * Git (https://github.com/git-guides/install-git)
 
 
+## Clone this repository
+
+```
+git clone https://github.com/cockroachlabs-field/crdb-k8s-workshop-1hr.git
+```
+
 ## Deploy CockroachDB into your k8s cluster
 
 Create a variable that represents a region, as we're in a local environment we'll only use one to save on resources in this workshop.

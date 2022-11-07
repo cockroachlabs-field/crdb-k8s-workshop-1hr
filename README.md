@@ -248,6 +248,11 @@ Has service now resumed? What is happening in the UI?
 Now that we have demonstrated the capabilities of running CockroachDB in Kubernetes, we can clean up the resources that we have created by running the below commands.
 
 ```
-kubectl delete -f manifests/cockroachdb-statefulset-secure.yaml -n $region \
+kubectl delete -f manifests/cockroachdb-statefulset-secure.yaml -n $region
+```
+```
 kubectl delete ns $region
+```
+```
+rm -rf certs my-safe-directory
 ```

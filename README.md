@@ -87,13 +87,6 @@ generic cockroachdb.node \
 --namespace $region
 ```
 
-Once this is deployed, we can remove the local copy of the certs
-
-```
-rm certs/node.crt
-rm certs/node.key
-```
-
 Deploy the CRDB StatefulSet.
 > There are some hard coded region names in the manifest. If you have changed the region name you will need to edit the file. You may also want to adjust the replica count and resource requests and limits depending on your computer spec.
 

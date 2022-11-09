@@ -9,6 +9,60 @@ A local or remote Kubernetes environment that is accessible from your machine, i
 * Kubectl (https://kubernetes.io/docs/tasks/tools/)
 * Cockroach CLI (https://www.cockroachlabs.com/docs/v22.1/install-cockroachdb.html)
 * Git (https://github.com/git-guides/install-git)
+* Ked (https://k3d.io/v5.4.6/)
+
+### Cockroach CLI Installation
+
+```
+brew install cockroachdb/tap/cockroach
+```
+Or if not using Brew
+```
+curl https://binaries.cockroachdb.com/cockroach-v22.1.10.darwin-10.9-amd64.tgz | tar -xJ && cp -i cockroach-v22.1.10.darwin-10.9-amd64/cockroach /usr/local/bin/
+```
+
+### Git Installation
+
+```
+brew install git
+```
+Or if not using Brew
+```
+Download the MacOS Git Installer: https://sourceforge.net/projects/git-osx-installer/files/git-2.23.0-intel-universal-mavericks.dmg/download?use_mirror=autoselect
+```
+
+### Kubectl Installation
+
+```
+brew install kubectl
+```
+Or if not using Brew (Swap to arm64 if using Silicon)
+```
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/darwin/amd64/kubectl"
+```
+```
+chmod +x ./kubectl
+```
+```
+sudo mv ./kubectl /usr/local/bin/kubectl
+sudo chown root: /usr/local/bin/kubectl
+```
+
+### k3d Installation
+
+```
+wget -q -O - https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
+```
+
+### Create k3d Cluster (Optional if using something else)
+
+```
+k3d cluster create kube-workshop
+```
+
+```
+kubectl get nodes
+```
 
 
 ## Clone this repository

@@ -9,7 +9,7 @@ A local or remote Kubernetes environment that is accessible from your machine, i
 * Kubectl (https://kubernetes.io/docs/tasks/tools/)
 * Cockroach CLI (https://www.cockroachlabs.com/docs/v22.1/install-cockroachdb.html)
 * Git (https://github.com/git-guides/install-git)
-* Ked (https://k3d.io/v5.4.6/)
+* K3d (https://k3d.io/v5.4.6/)
 
 ### Cockroach CLI Installation
 
